@@ -1,0 +1,6 @@
+development:
+	project_name: FLIGHT PATH
+test:
+	project_name: FLIGHT PATH
+production:
+	project_name: CONNECTED FLEET
