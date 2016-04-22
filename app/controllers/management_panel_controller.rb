@@ -383,7 +383,7 @@ class ManagementPanelController < ApplicationController
 		# if params[:file].content_type == "application/vnd.android.package-archive"
 		begin 
 			front_name = params[:file].original_filename.split("_")[0].downcase + ".apk"
-			front_dir = Rails.root.join('..', 'connectedfleet-frontend')
+			front_dir = Rails.root.join('..', 'connectedfleet_frontend')
 			name = Time.now.utc.to_i.to_s + "_" + params[:company_id].to_s + "_" + params[:version_name].to_s + "_" + params[:version_code] + ".apk" 
 			directory = "#{Rails.root}/public/apps/"
 			path = File.join(directory, name)
@@ -408,7 +408,7 @@ class ManagementPanelController < ApplicationController
 		# if params[:file].content_type == "application/vnd.android.package-archive"
 		begin 
 			front_name = params[:file].original_filename.split("_")[0].downcase + ".apk"
-			front_dir = Rails.root.join('..', 'connectedfleet-frontend')
+			front_dir = Rails.root.join('..', 'connectedfleet_frontend')
 			name = Time.now.utc.to_i.to_s + "_" + params[:company_id].to_s + "_" + params[:version_name].to_s + "_" + params[:version_code] + ".apk" 
 			directory = "#{Rails.root}/public/apps/"
 			path = File.join(directory, name)
