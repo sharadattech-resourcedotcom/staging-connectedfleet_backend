@@ -5,7 +5,7 @@
 	belongs_to :trip
 
  	def fuel_avg_in_mpg
- 		return sprintf("%.2f", self.fuel_avg * TripStat::KML_TO_MPG).to_f
+ 		return sprintf("%.2f", self.fuel_avg).to_f
  	end
 
     def self.cron_job(limit, gen)
