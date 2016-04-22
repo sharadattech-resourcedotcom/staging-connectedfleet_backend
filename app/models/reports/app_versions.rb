@@ -11,8 +11,9 @@ class Reports::AppVersions
 		users.each do |u|
 			last_sync = u.last_sync
 			last_sync = last_sync.strftime("%d/%m/%Y %H:%M") if !last_sync.nil?
-			last_log = ApiLogger.where("user_id = ?", u.id).last
-			values.push([ u.first_name, u.last_name, u.email, u.app_version, last_log.app_version_code, last_sync])
+			version_code = ApiLogger.where("user_id = ?", u.id).last
+			version_code = version_code.app_version_code if !version_code.nil?
+			values.push([ u.first_name, u.last_name, u.email, u.app_version, version_code, last_sync])
 		end
 
 		return [columns, values]
