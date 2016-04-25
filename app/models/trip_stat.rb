@@ -49,15 +49,35 @@
     	stat.update_attribute(:dongle_points, dongles.length)
     	stat.update_attribute(:points_total, points.length)
 
+        speeds_over_123 = 0
+        speeds_over_123_long = 0
     	speeds = []
     	rpms = []
     	fuels = [] 
         accs = []   	    	
+        time = 0
+        over = false
+        points.each do |d|
+            if d.vehicle_speed > 123 && d.vehicle_speed != 152
+                speeds_over_123 += 1
+                if !over
+                    over = true
+                    time = d.timestamp
+                end
+            else 
+                if over 
+                    over = false
+                    if (d.timestamp - time) >= 30
+                        speeds_over_123_long += 1
+                    end
+                end
+            end
+        end
 
     	dongles.each do |d|
     		b_points = 0
 
-    		speeds.push(d.vehicle_speed) if d.vehicle_speed >= 0  && d.vehicle_speed != 152  		
+    		speeds.push(d.vehicle_speed) if d.vehicle_speed >= 0 && d.vehicle_speed != 152  		
             accs.push(d.acceleration) if d.acceleration >= 0
 
     		if d.fuel_economy >= 0 && d.fuel_economy != 2.5
@@ -90,7 +110,9 @@
             :acc_avg => (accs.length == 0) ? 0 : sprintf("%.2f", accs.reduce(:+) / accs.length),
 			:rpm_avg => (rpms.length == 0) ? 0 : sprintf("%.2f", rpms.reduce(:+) / rpms.length),
 			:fuel_avg => (fuels.length == 0) ? 0 : sprintf("%.2f", (fuels.reduce(:+) / fuels.length) * TripStat::KML_TO_MPG),
-			:behaviour_points => (trip_beh.nil?) ? 0 : sprintf("%.2f", trip_beh)
+			:behaviour_points => (trip_beh.nil?) ? 0 : sprintf("%.2f", trip_beh),
+            :speeds_over_123 => speeds_over_123,
+            :speeds_over_123_long => speeds_over_123_long
 		)    	
 		
 		t.update_attribute(:stats_gen, true)
