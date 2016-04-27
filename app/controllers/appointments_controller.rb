@@ -31,7 +31,7 @@ class AppointmentsController < ApplicationController
 
 	def details
 		appointment = Appointment.where(:id => params[:id]).take
-		inspections = appointment.job.mobileInspections
+		inspections = appointment.job.mobileInspections + appointment.collection_job.mobileInspections
 		return render :json => {:status => true, :errors => [], :data => {:appointment => appointment, :driver => appointment.job.user, :inspections => inspections}}
 	end
 
