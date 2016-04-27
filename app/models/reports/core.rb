@@ -21,6 +21,7 @@ class Reports::Core
 		if session_user.company.enabled_hours_payroll
 			list.push(Reports::HoursPayroll)
 		end
+		list.push(Reports::Speeding) if session_user.company_id == 4
 
 		return list
 	end
