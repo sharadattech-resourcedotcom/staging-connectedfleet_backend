@@ -1,7 +1,7 @@
 class Job < ActiveRecord::Base
 	belongs_to :appointment
 	belongs_to :user
-	has_many :mobileInspections
+	has_many :mobileInspections,  :class_name => 'MobileInspection', :foreign_key => 'job_id'
 	
 	def driver_full_name
 		info = self.user.full_name
