@@ -4,8 +4,8 @@ class Appointment < ActiveRecord::Base
 	belongs_to :product
 	belongs_to :insurance_company
 	belongs_to :vehicle
-	has_one :job, class_name: "Job"
-	has_one :collection_job, class_name: "Job"
+	has_one :job, -> { where("job_type = 'D'") }, class_name: "Job"
+	has_one :collection_job, -> { where("job_type = 'C'") }, class_name: "Job"
 
 	validates_presence_of :branch_id, :product_id, :insurance_company_id, :vehicle_id
 
