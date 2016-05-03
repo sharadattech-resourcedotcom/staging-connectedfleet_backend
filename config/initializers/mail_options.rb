@@ -1,11 +1,11 @@
 require 'mail'
 
-options = { :address              => "smtp.mandrillapp.com",
+options = { :address              => "smtp.office365.com",
             :port                 => 587,
-            :domain               => 'smtp.mandrillapp.com',
-            :user_name            => 'wojciech.b@appsvisio.com',
-            :password             => 'mFvf6b2yBC9YKrh-lOiZjg',
-            :authentication       => :plain,
+            :domain               => 'smtp.office365.com',
+            :user_name            => 'noreply@3reign.com',
+            :password             => 'Xawu4077',
+            :authentication       => :login,
             :enable_starttls_auto => true  }
 
 Mail.defaults do
