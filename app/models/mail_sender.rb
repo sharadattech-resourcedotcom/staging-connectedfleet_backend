@@ -4,10 +4,10 @@ class MailSender
 
     def self.send_email_about_closed_period(period) 
         template = CompanyEmail.where('company_id = ? AND email_type = ?', period.user.company_id, 'Closed period').take   
-        email_text  = template.body(period)                
+        email_text  = template.body(period)
         mail = Mail.new do
             to period.agent_email
-            from 'noreply@connectedfleet.com'
+            from 'noreply@3reign.com'
              subject  template.desc_subject(period)
              html_part do
                 content_type 'text/plain; charset=UTF-8'
@@ -18,10 +18,24 @@ class MailSender
         mail.deliver
     end
 
+    def self.test_email
+        mail = Mail.new do
+            to "radwas88@gmail.com"
+            from 'noreply@3reign.com'
+             subject  "To see if this email will be sent"
+             html_part do
+                content_type 'text/plain; charset=UTF-8'
+                body "Just to check this"
+             end
+        end  
+
+        mail.deliver
+    end
+
     def self.send_email_on_new_month(period)
         mail = Mail.new do
            to period.user.email
-           from 'noreply@connectedfleet.com'
+           from 'noreply@3reign.com'
            subject  'Reminder to Close Month End Mileage'
            html_part do
               content_type 'text/html; charset=UTF-8'
@@ -52,7 +66,7 @@ class MailSender
           #to 'radwas88@gmail.com'
           to period.user.email
           #to 'shinga@poczta.fm'
-          from 'noreply@connectedfleet.com'
+          from 'noreply@3reign.com'
           subject 'Final Reminder to Close Month End Mileage'
           html_part do
             content_type 'text/html; charset=UTF-8'
@@ -80,7 +94,7 @@ class MailSender
     end
       mail = Mail.new do
         to 'radwas88@gmail.com'
-        from 'noreply@connectedfleet.com'
+        from 'noreply@3reign.com'
         subject 'Raport about failed synchronizations'
         html_part do
           content_type 'text/html; charset=UTF-8'
@@ -97,7 +111,7 @@ class MailSender
         email_text  = template.body(period)                
         mail = Mail.new do
             to period.agent_email
-            from 'noreply@connectedfleet.com'
+            from 'noreply@3reign.com'
              subject  template.desc_subject(period)
              html_part do
                 content_type 'text/plain; charset=UTF-8'
@@ -116,7 +130,7 @@ class MailSender
                       
         mail = Mail.new do
             to period.user.email
-            from 'noreply@connectedfleet.com'
+            from 'noreply@3reign.com'
             subject  'Mileage submission approval'
             html_part do
               content_type 'text/html; charset=UTF-8'
@@ -135,7 +149,7 @@ class MailSender
         mail = Mail.new do
           to 'shinga@poczta.fm'
 
-          from 'noreply@connectedfleet.com'
+          from 'noreply@3reign.com'
           subject 'spreadsheet'
           body email_text
           add_file (xls)
@@ -147,7 +161,7 @@ class MailSender
     def self.send_email_about_automatically_approved(period)
         mail = Mail.new do
             to period.agent_email
-            from 'noreply@connectedfleet.com'
+            from 'noreply@3reign.com'
             subject 'Outstanding driver mileage submissions requiring authorisation'
             html_part do
              content_type 'text/html; charset=UTF-8'
@@ -200,7 +214,7 @@ class MailSender
                 begin
                     mail = Mail.new do
                         to receips
-                        from 'noreply@connectedfleet.com'
+                        from 'noreply@3reign.com'
                         subject template.desc_subject(inspection)
                         content_type "multipart/alternative"
                         part "text/plain" do |p|
@@ -229,7 +243,7 @@ class MailSender
             if !template.nil?
                 mail = Mail.new do
                     to template.recipients.split(/[,;]/)
-                    from 'noreply@connectedfleet.com'
+                    from 'noreply@3reign.com'
                     subject "Sales Staff report - " + Date.today.strftime("%F")
                     html_part do
                         content_type 'text/html; charset=UTF-8'
