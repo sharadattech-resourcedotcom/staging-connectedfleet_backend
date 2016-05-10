@@ -40,7 +40,7 @@ end
 # end
 
 every 1.month, :at => 'January 9th 9.00 am' do
-   runner "EndMonthProcess.send_reminder_to_agents", :environment => 'development'
+   runner "EndMonthProcess.send_reminder_to_agents", :environment => 'production'
 end
 
 # every 1.month, :at => 'January 10th 9.00 am' do
@@ -51,18 +51,18 @@ end
 # end
 
 every 15.minutes do 
-	runner "Payroll.calculate_for(Date.today)", :environment => 'development'
-	runner "Payroll.calculate_for(Date.today - 1.day)", :environment => 'development'
+	runner "Payroll.calculate_for(Date.today)", :environment => 'production'
+	runner "Payroll.calculate_for(Date.today - 1.day)", :environment => 'production'
 end
 
 every 1.day, :at => '10:05 am' do 
-	runner "MailSender.send_sales_staff_reports", :environment => 'development'
+	runner "MailSender.send_sales_staff_reports", :environment => 'production'
 end
 
 every 15.minutes do 
-	runner "Company.cron_job", :environment => 'development'
+	runner "Company.cron_job", :environment => 'production'
 end
 
 every 15.minutes do 
-	runner "TripStat.cron_job(1000, false)", :environment => 'development'
+	runner "TripStat.cron_job(1000, false)", :environment => 'production'
 end
