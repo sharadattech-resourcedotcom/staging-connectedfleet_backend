@@ -48,3 +48,5 @@ gem 'geocoder'
 gem 'prawn'
 
 gem 'fastimage'
+
+gem 'net-sftp'
