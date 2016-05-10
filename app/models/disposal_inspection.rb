@@ -25,5 +25,10 @@ class DisposalInspection < ActiveRecord::Base
 			# MailSender.send_upload_confirm(false, file_path, "1Link", ex.backtrace)
 		end
 	end	
-	
+
+	def self.one_link_cron
+		DisposalInspection.where("all_sent = FALSE").each do |insp|
+			insp.send_to_epyx
+		end
+	end
 end

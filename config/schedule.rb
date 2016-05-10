@@ -55,6 +55,10 @@ every 15.minutes do
 	runner "Payroll.calculate_for(Date.today - 1.day)", :environment => 'production'
 end
 
+every 15.minutes do 
+	runner "DisposalInspection.one_link_cron", :environment => 'production'
+end
+
 every 1.day, :at => '10:05 am' do 
 	runner "MailSender.send_sales_staff_reports", :environment => 'production'
 end
