@@ -17,7 +17,7 @@ class DisposalInspection < ActiveRecord::Base
 	                photo.save!
 				}
 			end
-			self.update_attribute(:all_sent => true)
+			self.update_attribute(:all_sent, true)
 		rescue => ex
 			puts ex.backtrace
 			puts "***********"
