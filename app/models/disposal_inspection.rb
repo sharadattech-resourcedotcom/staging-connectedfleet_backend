@@ -14,12 +14,14 @@ class DisposalInspection < ActiveRecord::Base
 					ftp.chdir("/Upload")
 	                ftp.putbinaryfile(file_path, photo.ftp_filename)
 	                photo.sent = true
-	                file.save!
+	                photo.save!
 				}
 			end
 			self.update_attribute(:all_sent => true)
 		rescue => ex
 			puts ex.backtrace
+			puts "***********"
+			puts ex.message
 			# MailSender.send_upload_confirm(false, file_path, "1Link", ex.backtrace)
 		end
 	end	
