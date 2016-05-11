@@ -18,7 +18,7 @@ class Reports::HoursPayroll
 		end
 
 		users.each do |u|
-			payrolls = Payroll.where("user_id = ? AND for_date >= ? AND for_date <= ?", u.id, Date.parse(date_from), Date.parse(date_to))			
+			payrolls = Payroll.where("user_id = ? AND DATE(for_date) >= DATE(?) AND DATE(for_date) <= DATE(?)", u.id, Date.parse(date_from), Date.parse(date_to))			
 
 			normal_hours = 0
 			extra_hours = 0
