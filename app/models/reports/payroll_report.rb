@@ -1,4 +1,4 @@
-class Reports::Payroll
+class Reports::PayrollReport
 	def self.info
 		return {:name => 'Payroll', :key => 'payrollReport'} 
 	end

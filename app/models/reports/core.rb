@@ -15,7 +15,7 @@ class Reports::Core
 			Reports::DriverPayrollDetailed,
 			Reports::BehaviourReport,
 			Reports::TopTenBehaviour,
-			Reports::Payroll
+			Reports::PayrollReport
 		]
 
 		if session_user.company.enabled_hours_payroll
