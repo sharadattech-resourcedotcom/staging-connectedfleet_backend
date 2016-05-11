@@ -1,0 +1,37 @@
+<div class="row close-form" ng-show="mode == 'close'">
+	<% if !@error.nil? %>
+		<div class="alert alert-danger" style="background: red"><%= @error %></div> 
+	<% end %>
+	<% if !@success.nil? %>
+		<div class="alert alert-success" style="background: green"><%= @success %></div> 
+	<% end %>
+	<% if !@period.nil? %>
+		<form accept-charset="UTF-8" action="/drivers/closePeriodView" method="get">
+			<div class="form-group">
+				<p>Start date: <%= @period.start_date %></p>               
+				<p>Start mileage: <%= @period.start_mileage %></p>       
+			</div>
+			<div class="form-group">
+				<label>Period End Date:</label><br>
+				<%= select_tag :end_day, options_for_select(@days.collect{ |d| [d, d] }), :include_blank => true, :required => true  %> / 
+				<%= select_tag :end_month, options_for_select(@months.collect{ |m| [m, m] }), :include_blank => true, :required => true  %> / 
+				<%= select_tag :end_year, options_for_select(@years.collect{ |y| [y, y] }), :include_blank => true, :required => true %>
+			</div><br>
+			<div class="form-group">
+				<label>End mileage</label>
+				<%= number_field_tag :end_mileage, @end_mileage, :required => true %>
+			</div><br>       
+			<div class="form-group">
+				<label >Agent email address </label>
+				<%= text_field_tag :agent_email, @agent_email, :required => true %>
+			</div><br>
+			<div class="form-group">
+				<%= check_box_tag :agree, false, false, :required => true %> I confirm that I have completed all checks (Visual, Internal and External), as described in Photo-Me’s online Driver Awareness training and Driver Handbook. I have also reported any defects to CLM and/or Photo-Me’s Health & Safety Manager.</a>
+			</div>
+			<%= hidden_field_tag(:token, @token) %>
+			<div class="form-group">
+				<%= submit_tag "Close period" %> 
+			</div>
+		</form>
+	<% end %>
+</div>

@@ -1,0 +1,3 @@
+COPY(select * from trips inner join periods on periods.start_date = trips.period_start_date and periods.user_id = trips.user_id inner join users on users.id = trips.user_id) TO '/tmp/copy.csv' WITH DELIMITER ';' CSV HEADER;
+
+COPY(select email, vehicle_reg_number, start_date, end_date, start_mileage, end_mileage, status, approved, agent_email from periods inner join users on users.id = user_id where start_date < '2014-10-01 00:00:00' order by start_date asc) TO '/tmp/periods.csv' WITH DELIMITER ';' CSV HEADER;
