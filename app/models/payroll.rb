@@ -2,7 +2,7 @@ class Payroll < ActiveRecord::Base
 	belongs_to :user
 	
 	def self.calculate_for(date)
-		Payroll.where(:for_date => date).each do |p|
+		Payroll.where("DATE(for_date) = (?) AND end_datetime IS NOT NULL", date).each do |p|
 			extra_hours = 0
 			start_datetime = p.start_datetime.change(sec: 0)
 			end_datetime = p.end_datetime.change(sec: 0)
