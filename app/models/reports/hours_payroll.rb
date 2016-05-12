@@ -52,7 +52,7 @@ class Reports::HoursPayroll
 				'',
 				((normal_hours.round(2) * 7.1) + (extra_hours.round(2) * 8.25) + (normal_hours.round(2) * 7.1 * 0.1208) + (extra_hours.round(2) * 8.25 * 0.1208)).round(2).to_s,
 				'',
-				(normal_hours.round(2) + extra_hours.round(2)).to_s
+				(normal_hours.round(2) + extra_hours.round(2)).round(2).to_s
 				# standard_payment,				
 				# extra_payment,
 			])
