@@ -73,4 +73,74 @@ class Company < ActiveRecord::Base
         end
     end
 
+    def self.remove_company(company_id, company_name, email, password)
+        user = User.authenticate(email, password)
+        if !user || !user.is_admin
+            return "Fail! Admin access required!"
+        end
+
+        company = Company.find(company_id)
+        if !company
+            return "Company not found!"
+        end
+
+        if company.name != company_name
+            return "Wrong company_name or company_id!"
+        end
+
+        ActiveRecord::Base.transaction do
+            #STEP 1
+            Settings.where(:company_id => company.id).delete_all
+            CompanyEmail.where(:company_id => company.id).delete_all
+            AppVersion.where(:company_id => company.id).delete_all
+            SalesStaff.where(:company_id => company.id).delete_all
+
+            appointments = Appointment.where(:company_id => company.id)
+            appointments_ids = appointments.pluck(:id)
+            jobs = Job.where("appointment_id IN (?)", appointments_ids)
+            jobs_ids = jobs.pluck(:id)
+            inspections = MobileInspection.where("job_id IN (?)", jobs_ids)
+            inspections_ids = inspections.pluck(:id)
+            DamageCollection.where("mobile_inspection_id IN (?)", inspections_ids).delete_all
+            DamageItem.where("mobile_inspection_id IN (?)", inspections_ids).delete_all
+            inspections.delete_all
+            jobs.delete_all
+            appointments.delete_all
+            Product.where(:company_id => company_id).delete_all
+            InsuranceCompany.where(:company_id => company_id).delete_all
+
+            #STEP 2
+            users = User.where(:company_id => company_id)
+            users_ids = users.pluck(:id)
+            UserVehicle.where("user_id IN (?)", users_ids).delete_all
+            ApiToken.where("user_id IN (?)", users_ids).delete_all
+            ApiLogger.where("user_id IN (?)", users_ids).delete_all
+            ManagerDriver.where("manager_id IN (?) OR driver_id IN (?)", users_ids, users_ids).delete_all
+            Token.where("user_id IN (?)", users_ids).delete_all
+            Device.where("user_id IN (?)", users_ids).delete_all
+            Point.where("user_id IN (?)", users_ids).delete_all
+            Payroll.where("user_id IN (?)", users_ids).delete_all
+            MobileLog.where("user_id IN (?)", users_ids).delete_all
+            UserPermission.where("user_id IN (?)", users_ids).delete_all
+
+            trips = Trip.where("user_id IN (?)", users_ids)
+            trips_ids = trips.pluck(:id)
+            TripStat.where("trip_id IN (?)", trips_ids).delete_all
+            trips.delete_all
+            Period.where("user_id IN (?)", users_ids).delete_all
+            disposals = DisposalInspection.where("user_id IN (?)", users_ids)
+            DisposalPhoto.where("disposal_inspection_id IN (?)", disposals.pluck(:id)).delete_all
+            disposals.delete_all
+            DriverType.where(:company_id => company.id).delete_all
+            users.delete_all
+
+            #STEP 3
+            Vehicle.where(:company_id => company.id).delete_all
+            # Model.where(:company_id => company.id).delete_all
+            # Manufacturer.where(:company_id => company.id).delete_all
+            company.delete
+            return company.name + " company no longer exist in the system!" 
+        end
+    end
+
 end
