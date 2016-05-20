@@ -44,7 +44,7 @@ class AppointmentsController < ApplicationController
 				appointment.build_job(:status => 0)
 
 				#FOR GEMINI
-				if @session_user.company_id == 8
+				if @session_user.company_id == 35
 					appointment.build_collection_job(:status => 0, :job_type => 'C')
 				end
 				###########
@@ -57,7 +57,7 @@ class AppointmentsController < ApplicationController
 				appointment.job.update_attributes(number: job_number, abort_code: abort_code)
 
 				#FOR GEMINI
-				if @session_user.company_id == 8
+				if @session_user.company_id == 35
 					col_job_number = appointment.collection_job.id.to_s
 					while col_job_number.length < 8
 						col_job_number = col_job_number.insert(0,'0')
