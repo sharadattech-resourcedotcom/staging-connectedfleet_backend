@@ -95,15 +95,17 @@ class Company < ActiveRecord::Base
             AppVersion.where(:company_id => company.id).delete_all
             SalesStaff.where(:company_id => company.id).delete_all
 
+
             appointments = Appointment.where(:company_id => company.id)
             appointments_ids = appointments.pluck(:id)
-            jobs = Job.where("appointment_id IN (?)", appointments_ids)
+            jobs = Job.where("appointment_id IN (?)  AND appointment_id IS NOT NULL", appointments_ids)
             jobs_ids = jobs.pluck(:id)
-            inspections = MobileInspection.where("job_id IN (?)", jobs_ids)
+            inspections = MobileInspection.where("job_id IN (?) AND job_id IS NOT NULL", jobs_ids)
             inspections_ids = inspections.pluck(:id)
-            DamageCollection.where("mobile_inspection_id IN (?)", inspections_ids).delete_all
-            DamageItem.where("mobile_inspection_id IN (?)", inspections_ids).delete_all
+            DamageCollection.where("mobile_inspection_id IN (?) AND mobile_inspection_id IS NOT NULL", inspections_ids).delete_all
+            DamageItem.where("mobile_inspection_id IN (?) AND mobile_inspection_id IS NOT NULL", inspections_ids).delete_all
             inspections.delete_all
+            Trip.where("job_id IN (?) AND job_id IS NOT NULL", jobs_ids).update_all(:job_id => nil)
             jobs.delete_all
             appointments.delete_all
             Product.where(:company_id => company_id).delete_all
@@ -112,32 +114,41 @@ class Company < ActiveRecord::Base
             #STEP 2
             users = User.where(:company_id => company_id)
             users_ids = users.pluck(:id)
-            UserVehicle.where("user_id IN (?)", users_ids).delete_all
-            ApiToken.where("user_id IN (?)", users_ids).delete_all
-            ApiLogger.where("user_id IN (?)", users_ids).delete_all
+            inspections = MobileInspection.where("user_id IN (?) AND user_id IS NOT NULL", users_ids)
+            inspections_ids = inspections.pluck(:id)
+            DamageCollection.where("mobile_inspection_id IN (?) AND mobile_inspection_id IS NOT NULL", inspections_ids).delete_all
+            DamageItem.where("mobile_inspection_id IN (?) AND mobile_inspection_id IS NOT NULL", inspections_ids).delete_all
+            inspections.delete_all
+            UserVehicle.where("user_id IN (?) AND user_id IS NOT NULL", users_ids).delete_all
+            ApiToken.where("user_id IN (?) AND user_id IS NOT NULL", users_ids).delete_all
+            ApiLogger.where("user_id IN (?) AND user_id IS NOT NULL", users_ids).delete_all
             ManagerDriver.where("manager_id IN (?) OR driver_id IN (?)", users_ids, users_ids).delete_all
-            Token.where("user_id IN (?)", users_ids).delete_all
-            Device.where("user_id IN (?)", users_ids).delete_all
-            Point.where("user_id IN (?)", users_ids).delete_all
-            Payroll.where("user_id IN (?)", users_ids).delete_all
-            MobileLog.where("user_id IN (?)", users_ids).delete_all
-            UserPermission.where("user_id IN (?)", users_ids).delete_all
+            Token.where("user_id IN (?) AND user_id IS NOT NULL", users_ids).delete_all
+            Device.where("user_id IN (?) AND user_id IS NOT NULL", users_ids).delete_all
+            Point.where("user_id IN (?) AND user_id IS NOT NULL", users_ids).delete_all
+            Payroll.where("user_id IN (?) AND user_id IS NOT NULL", users_ids).delete_all
+            MobileLog.where("user_id IN (?) AND user_id IS NOT NULL", users_ids).delete_all
+            UserPermission.where("user_id IN (?) AND user_id IS NOT NULL", users_ids).delete_all
 
-            trips = Trip.where("user_id IN (?)", users_ids)
+            trips = Trip.where("user_id IN (?) AND user_id IS NOT NULL", users_ids)
             trips_ids = trips.pluck(:id)
-            TripStat.where("trip_id IN (?)", trips_ids).delete_all
+            TripStat.where("trip_id IN (?) AND trip_id IS NOT NULL", trips_ids).delete_all
             trips.delete_all
-            Period.where("user_id IN (?)", users_ids).delete_all
-            disposals = DisposalInspection.where("user_id IN (?)", users_ids)
-            DisposalPhoto.where("disposal_inspection_id IN (?)", disposals.pluck(:id)).delete_all
+            Period.where("user_id IN (?) AND user_id IS NOT NULL", users_ids).delete_all
+            disposals = DisposalInspection.where("user_id IN (?) AND user_id IS NOT NULL", users_ids)
+            DisposalPhoto.where("disposal_inspection_id IN (?) AND disposal_inspection_id IS NOT NULL", disposals.pluck(:id)).delete_all
             disposals.delete_all
             DriverType.where(:company_id => company.id).delete_all
             users.delete_all
+            Branch.where(:company_id => company.id).delete_all
 
             #STEP 3
-            Vehicle.where(:company_id => company.id).delete_all
-            # Model.where(:company_id => company.id).delete_all
-            # Manufacturer.where(:company_id => company.id).delete_all
+            vehicles = Vehicle.where(:company_id => company.id)
+            Trip.where("vehicle_id IN (?)", vehicles.pluck(:id)).update_all(:vehicle_id => nil)
+            vehicles.delete_all
+            manf = Manufacturer.where(:company_id => company.id)
+            Model.where("manufacturer_id IN (?)", manf.pluck(:id)).delete_all
+            manf.delete_all
             company.delete
             return company.name + " company no longer exist in the system!" 
         end
