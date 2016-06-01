@@ -20,7 +20,11 @@ class Reports::PayrollReport
 			vehicles_ids.each do |vehicle_id|
 				vehicle = period_trips.select{|t| t.vehicle_id == vehicle_id}.first.vehicle
 			 	vehicle_last_trip = Period.last_trip_by_vehicle(vehicle, period_trips)
-			 	start_mileage = Period.first_trip_by_vehicle(vehicle, period_trips).start_mileage
+			 	if period.first_trip.id == Period.first_trip_by_vehicle(vehicle, period_trips).id
+			 		start_mileage = period.start_mileage
+			 	else
+			 		start_mileage = Period.first_trip_by_vehicle(vehicle, period_trips).start_mileage
+			 	end
 			 	end_mileage = vehicle_last_trip.end_mileage
 			 	business_mileage = Period.business_mileage_by_vehicle(vehicle, period_trips)
 			 	private_mileage =  Period.privete_mileage_by_vehicle(vehicle, period_trips)
