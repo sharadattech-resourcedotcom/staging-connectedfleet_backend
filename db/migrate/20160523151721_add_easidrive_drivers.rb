@@ -53,6 +53,7 @@ bristol = [["168001011", "Allan Roberts"],
 			 u[:email] = data[1].downcase.gsub(" ","") + "@ed.com"
 			 u[:password] = u[:first_name] + "123!!"
 			 u[:role_description] = "Driver"
+			 u[:on_trip] = false
 			 user = User.create(u, 34)
 			 user.update_attributes(:branch_id => Branch.where("company_id = 34 AND description = 'Horsham'").take.id, :payroll_number => data[0])
 		end
@@ -64,6 +65,7 @@ bristol = [["168001011", "Allan Roberts"],
 			 u[:email] = data[1].downcase.gsub(" ","") + "@ed.com"
 			 u[:password] = u[:first_name] + "123!!"
 			 u[:role_description] = "Driver"
+			 u[:on_trip] = false
 			 user = User.create(u, 34)
 			 user.update_attributes(:branch_id => Branch.where("company_id = 34 AND description = 'Hitchin'").take.id, :payroll_number => data[0])
 		end
@@ -75,6 +77,7 @@ bristol = [["168001011", "Allan Roberts"],
 			 u[:email] = data[1].downcase.gsub(" ","") + "@ed.com"
 			 u[:password] = u[:first_name] + "123!!"
 			 u[:role_description] = "Driver"
+			 u[:on_trip] = false
 			 user = User.create(u, 34)
 			 user.update_attributes(:branch_id => Branch.where("company_id = 34 AND description = 'Bristol'").take.id, :payroll_number => data[0])
 		end
