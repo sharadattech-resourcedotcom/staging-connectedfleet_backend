@@ -39,7 +39,7 @@ class InspectionsController < ApplicationController
 		send_data InspectionsPdf.generate_pdf(inspection, params).render, type: "application/pdf", disposition: "inline"
 	end
 
-	def download_clm_inspection_pdf
+	def download_gemini_inspection_pdf
 		@inspection = MobileInspection.find(params[:inspection_id])
         @vehicle = @inspection.vehicle
         @driver = @inspection.user
@@ -50,6 +50,21 @@ class InspectionsController < ApplicationController
         @interior = @damage_collections.where("collection_type = 'INTERIOR'")
         @exterior = @damage_collections.where("collection_type = 'EXTERIOR'")
         @ex_dots = []
+
+        respond_to do |format|
+            format.pdf do
+                render  :pdf => "inspection_#{params[:inspection_id]}_#{Date.today}", :template => 'pdf_templates/gemini.pdf.erb', :page_size => "A4"
+            end
+        end
+	end
+
+	def download_clm_inspection_pdf
+		@inspection = MobileInspection.find(params[:inspection_id])
+        @vehicle = @inspection.vehicle
+        @driver = @inspection.user
+        @job = @inspection.job.nil? ? nil : @inspection.job
+        @appointment = @job.nil? || @job.appointment.nil? ? nil : @job.appointment
+        @damages = @inspection.damageItems
 
         respond_to do |format|
             format.pdf do

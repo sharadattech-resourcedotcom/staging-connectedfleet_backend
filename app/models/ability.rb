@@ -117,6 +117,8 @@ class Ability
         permissions['inspections']['list'] = 'see inspections'
         permissions['inspections']['details'] = 'see inspections'
         permissions['inspections']['download_inspection_pdf'] = 'see inspections'
+        permissions['inspections']['download_gemini_inspection_pdf'] = 'see inspections'
+        permissions['inspections']['download_clm_inspection_pdf'] = 'see inspections'
 
 
     return permissions[controller][method]

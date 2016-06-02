@@ -157,6 +157,7 @@ Rails.application.routes.draw do
 
   match '/inspections/list' => 'inspections#list', :as => 'inspections_list', :via => [:post, :options]
   match '/inspections/download_inspection_pdf' => 'inspections#download_inspection_pdf', :as => 'download_inspection_pdf', :via => [:get, :options]
+  match '/inspections/download_gemini_inspection_pdf' => 'inspections#download_gemini_inspection_pdf', :as => 'download_gemini_inspection_pdf', :via => [:get, :options], :defaults => {:format => 'pdf'}
   match '/inspections/download_clm_inspection_pdf' => 'inspections#download_clm_inspection_pdf', :as => 'download_clm_inspection_pdf', :via => [:get, :options], :defaults => {:format => 'pdf'}
   match '/inspections/:id' => 'inspections#details', :as => 'inspection_details', :via => [:get, :options]
   #auth module
