@@ -35,7 +35,7 @@ class Reports::PayrollReport
 					period_trips.first.user.payroll_number,
 					period_trips.first.user.last_name + " " + period_trips.first.user.first_name,
 					vehicle.registration,
-					start_mileage,
+					end_mileage - business_mileage - private_mileage,
 					end_mileage,
 					business_mileage + private_mileage,
 					business_mileage,
