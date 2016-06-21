@@ -84,7 +84,7 @@ class AppointmentsController < ApplicationController
 
 	def appointment_params
 	  	params.require(:appointment).permit(:company_id, :branch_id, :product_id, :insurance_company_id, :vehicle_id, :claim_number,
-	  				:excess, :contact_name, :email, :street, :col_street, :col_postcode, :col_city, :city, :postcode, :mobile, :home_phone, :work_phone, :notes,
+	  				:excess, :contact_name, :email, :street, :street2, :col_street, :col_postcode, :col_city, :city, :postcode, :home_number, :mobile, :home_phone, :work_phone, :notes,
 	  				:insurer, :vatstatus, :customername, :customerphone, :courtesy_car)
 	end
 end
