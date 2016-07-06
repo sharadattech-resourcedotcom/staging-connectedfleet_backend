@@ -91,6 +91,11 @@ class TripsController < ApplicationController
 
   def listPoints
     points = Point.where('trip_id = ?', params[:id]).order(timestamp: :asc)
+    if params[:onlyCoords]
+      tmp = points.pluck(:latitude, :longitude, :vehicle_speed)
+      points = []
+      tmp.each {|p| points.push({lat: p[0], lng: p[1], speed: p[2]})}
+    end
     return render :json => {:status => true, :errors => [], :data => {:points => points}}
   end
 

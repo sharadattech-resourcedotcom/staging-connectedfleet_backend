@@ -8,10 +8,10 @@ class DisposalInspection < ActiveRecord::Base
 	def send_to_epyx
 		file_path = nil
 		begin
-			Net::FTP.open("ftp1.1link.co.uk", "TVM", "TVM2005") do |ftp|
+			Net::FTP.open("ftp1.1link.co.uk", "clm", "P3tr0lT@nk3r") do |ftp|
 				self.disposal_photos.each{|photo|
 					file_path = File.join(Rails.root, photo.path)
-					ftp.chdir("/Upload")
+					ftp.chdir("/DN-Upload/marketing")
 	                ftp.putbinaryfile(file_path, photo.ftp_filename)
 	                photo.sent = true
 	                photo.save!

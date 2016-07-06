@@ -25,6 +25,8 @@ class Reports::HoursPayroll
 			payment = 0
 			extra_payment = 0
 			standard_payment = 0
+			normal_rate = u.driver_type.hourly_rate
+			extra_rate = u.driver_type.additional_hour_rate
 
 			payrolls.each do |p|
 				if p.normal_hours.nil? || p.standard_payment.nil?
@@ -44,15 +46,15 @@ class Reports::HoursPayroll
 				u.last_name,
 				'0',
 				normal_hours.round(2).to_s,
-				(normal_hours.round(2) * 7.1).round(2).to_s,
+				(normal_hours.round(2) * normal_rate).round(2).to_s,
 				extra_hours.round(2).to_s,
-				(extra_hours.round(2) * 8.25).round(2).to_s,
+				(extra_hours.round(2) * extra_rate).round(2).to_s,
 				((normal_hours.round(2) + extra_hours.round(2)) * 7.26).round(2).to_s,
-				((normal_hours.round(2) * 7.1 * 0.1208) + (extra_hours.round(2) * 8.25 * 0.1208)).round(2).to_s,
+				((normal_hours.round(2) * normal_rate * 0.1208) + (extra_hours.round(2) * extra_rate * 0.1208)).round(2).to_s,
 				'',
-				((normal_hours.round(2) * 7.1) + (extra_hours.round(2) * 8.25) + (normal_hours.round(2) * 7.1 * 0.1208) + (extra_hours.round(2) * 8.25 * 0.1208)).round(2).to_s,
+				((normal_hours.round(2) * normal_rate) + (extra_hours.round(2) * extra_rate) + (normal_hours.round(2) * normal_rate * 0.1208) + (extra_hours.round(2) * extra_rate * 0.1208)).round(2).to_s,
 				'',
-				(normal_hours.round(2) + extra_hours.round(2)).to_s
+				(normal_hours.round(2) + extra_hours.round(2)).round(2).to_s
 				# standard_payment,				
 				# extra_payment,
 			])

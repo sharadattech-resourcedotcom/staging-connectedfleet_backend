@@ -22,12 +22,8 @@ class ApplicationController < ActionController::Base
 
   def authenticate_user
     controller = request.symbolized_path_parameters[:controller]
-    if request.symbolized_path_parameters[:action] == 'download_report_xls' || request.symbolized_path_parameters[:action] == 'download_inspection_pdf' ||
-      request.symbolized_path_parameters[:action] == 'download_points_xls'
-        user_token = ApiToken.where("access_token = ?", params[:token]).take
-    else
-      user_token = ApiToken.where("access_token = ?", request.headers["X-Access-Token"]).take
-    end  
+    user_token = ApiToken.where("access_token = ?", request.headers["X-Access-Token"]).take
+    user_token = ApiToken.where("access_token = ?", params[:token]).take if user_token.nil?
     if !user_token.nil?
       @session_user = user_token.user
       if controller == 'scheduler' || controller == 'appointments' || controller == 'inspections' 

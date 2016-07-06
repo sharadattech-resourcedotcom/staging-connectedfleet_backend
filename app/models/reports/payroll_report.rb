@@ -1,4 +1,4 @@
-class Reports::Payroll
+class Reports::PayrollReport
 	def self.info
 		return {:name => 'Payroll', :key => 'payrollReport'} 
 	end
@@ -20,7 +20,11 @@ class Reports::Payroll
 			vehicles_ids.each do |vehicle_id|
 				vehicle = period_trips.select{|t| t.vehicle_id == vehicle_id}.first.vehicle
 			 	vehicle_last_trip = Period.last_trip_by_vehicle(vehicle, period_trips)
-			 	start_mileage = Period.first_trip_by_vehicle(vehicle, period_trips).start_mileage
+			 	if period.first_trip.id == Period.first_trip_by_vehicle(vehicle, period_trips).id
+			 		start_mileage = period.start_mileage
+			 	else
+			 		start_mileage = Period.first_trip_by_vehicle(vehicle, period_trips).start_mileage
+			 	end
 			 	end_mileage = vehicle_last_trip.end_mileage
 			 	business_mileage = Period.business_mileage_by_vehicle(vehicle, period_trips)
 			 	private_mileage =  Period.privete_mileage_by_vehicle(vehicle, period_trips)
@@ -31,7 +35,7 @@ class Reports::Payroll
 					period_trips.first.user.payroll_number,
 					period_trips.first.user.last_name + " " + period_trips.first.user.first_name,
 					vehicle.registration,
-					start_mileage,
+					end_mileage - business_mileage - private_mileage,
 					end_mileage,
 					business_mileage + private_mileage,
 					business_mileage,

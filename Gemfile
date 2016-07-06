@@ -50,3 +50,6 @@ gem 'prawn'
 gem 'fastimage'
 
 gem 'net-sftp'
+
+gem 'wkhtmltopdf-binary'
+gem 'wicked_pdf'

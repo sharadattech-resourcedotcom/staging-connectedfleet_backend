@@ -1,0 +1,141 @@
+<div style="text-align:center;">
+	<!-- <img src="<%= "#{Rails.root}/app/assets/images/clm-logosmall.jpg" %>" />  --><h1>Gemini</h1>
+	<div style="text-align:center;"><h2><%= @inspection.job_type %> Inspection</h2></div> 
+</div>
+<table width="100%" height="100%">
+	<tr>
+		<td><h3 style="text-align:center;">Job info</h3></td>
+		<td><h3 style="text-align:center;">Vehicle info</h3></td>
+	</tr>
+	<tr>
+		<td valign="top" style="height:70px; width:50%;padding-right:40px;">
+			
+			<div style"text-align:left;">
+				<% if @job %>
+				<p><b>Reference Number: </b><%= @job.number %></p>
+				<% end %>
+				<p><b>Driver:</b> <%= @driver.full_name %></p>
+				<p><b>Customer:</b> <%= @inspection.customername.nil? ? "N/A" : @inspection.customername %></p>
+				<p><b>Customer Email:</b> <%= @inspection.customer_email.nil? ? "N/A" : @inspection.customer_email %></p>
+				<p><b>City:</b> <%= @inspection.city %></p>
+				<p><b>Postcode:</b> <%= @inspection.postcode %></p>
+				<p style="margin-bottom:0em;"><b>Address:</b> <%= @inspection.address_line_1 %></p>
+				<p style="margin-left:4em;margin-top:0em;"><%= @inspection.address_line_2 %></p>
+				<p><b>Home name/number:</b> <%= @inspection.home_number %></p>
+			</div>
+		</td>
+		<td valign="top" style="width:50%;">
+			
+			<p><b>Order Number:</b> <%= @vehicle.id %></p>
+			<p><b>Reg. Number:</b> <%= @vehicle.registration %></p>
+			<p><b>Make:</b> <%= @vehicle.manufacturer.description %></p>
+			<p><b>Model:</b> <%= @vehicle.model.description %></p>
+			<p><b>Color:</b> <%= @vehicle.color.nil? ? "N/A" : @vehicle.color %></p>
+			<p><b>Mileage:</b> <%= @inspection.mileage.nil? ? "N/A" : @inspection.mileage %></p>
+		</td>
+	</tr>
+</table>
+<hr/>
+<p><b>Notes:</b> <%= @inspection.notes.nil? ? "N/A" : @inspection.notes %></p>
+<p><b>Loose Items:</b> <%= @inspection.loose_items.nil? ? "N/A" : @inspection.loose_items %></p>
+<hr/>
+<div style="text-align:center;margin-top:20px;">
+	<h3>Terms Image</h3>
+	<% if @inspection.terms_file_name.nil? %>
+		<b>Terms image not available.</b>
+	<% else %>
+		<img  height="300px" src="<%= "#{Rails.root}/public/inspections/#{@inspection.terms_file_name}" %>">
+	<% end %>
+</div>
+<hr/>
+<div style="display:block; clear:both; page-break-after:always;"></div>
+<hr/>
+<h3 style="text-align:center;">Damages</h3>
+<table>
+	<tr>
+		<td align="center">
+			<div style="position:relative;">
+				<img style="width:100%;" src="<%= "#{Rails.root}/public/vehicle_exterior.png" %>" />
+				<% @exterior.each_with_index do |ex, index| %>
+					<div style="width: 17px;
+	                              height: 17px;
+	                              -webkit-border-radius: 25px;
+	                              -moz-border-radius: 25px;
+	                              border-radius: 25px;
+	                              background: green;
+	                              position:absolute; 
+	                              left:<%= ex.x_percent %>%;
+	                              top:<%= ex.y_percent %>%;"
+	                         ><%= index + 1 %></div>
+					
+				<% end %>
+			</div>
+		</td>
+		<td align="center">
+			<div style="position:relative;">
+				<img style="width:100%;" src="<%= "#{Rails.root}/public/vehicle_interior.png" %>" />
+				<% @interior.each_with_index do |i, index| %>
+					<div style="width: 17px;
+	                              height: 17px;
+	                              -webkit-border-radius: 25px;
+	                              -moz-border-radius: 25px;
+	                              border-radius: 25px;
+	                              background: green;
+	                              position:absolute; 
+	                              left:<%= i.x_percent %>%;
+	                              top:<%= i.y_percent %>%;"
+	                         ><%= index + 1 + @exterior.length %></div>
+					
+				<% end %>
+			</div>
+		</td>
+	</tr>
+</table>
+<hr/>
+<h3 style="text-align:center;margin-top:100px">Damages Photos</h3>
+<table width="100%">
+	<% @exterior.each_with_index do |ex, index| %>
+		<tr>
+			<td valign="top" style="width:30%;border-bottom:1px solid grey;margin: 5px 5px;">
+				<div style="width: 18px;
+                          height: 18px;
+                          -webkit-border-radius: 25px;
+                          -moz-border-radius: 25px;
+                          border-radius: 25px;
+                          background: green;
+                          text-align:center;
+                          margin: 10px 5px;
+                          " 
+                     ><%= (index + 1).to_s %><p style="display: inline-block; text-align:left;"><b>Description: </b> <%= ex.description %></p></div>
+                     
+			</td>
+			<td style="border-bottom:1px solid grey;">
+				<b><%= ex.damage_items.length > 0 ? nil : "No photo available" %></b>
+				<% ex.damage_items.each do |photo| %>	
+					<img style="display: inline; margin: 5px 5px;" width="200px" src="<%= "#{Rails.root}/public/damages/#{photo.file_path}" %>" />
+				<% end %>
+			</td>
+		</tr>
+	<% end %>
+	<% @interior.each_with_index do |inter, index| %>
+		<tr>
+			<td valign="top" style="width:30%;border-bottom:1px solid gray;">
+				<div style="width: 18px;
+                          height: 18px;
+                          -webkit-border-radius: 18px;
+                          -moz-border-radius: 18px;
+                          border-radius: 18px;
+                          background: green;
+                          text-align:center;
+                          margin: 5px 5px;" 
+                     ><%= index + @exterior.length + 1 %><p style="display: inline-block; text-align:left;"><b>Description: </b><%= inter.description %></p></div>
+			</td>
+			<td style="height:100px;border-bottom:1px solid grey;">
+				<b><%= inter.damage_items.length > 0 ? nil : "No photo available" %></b>
+				<% inter.damage_items.each do |photo| %>	
+					<img style="display: inline; margin: 5px 5px;" width="200px" src="<%= "#{Rails.root}/public/damages/#{photo.file_path}" %>" />
+				<% end %>
+			</td>
+		</tr>
+	<% end %>
+</table>

@@ -51,8 +51,8 @@ end
 # end
 
 every 15.minutes do 
-	runner "Payroll.calculate_for(Date.today)", :environment => 'production'
-	runner "Payroll.calculate_for(Date.today - 1.day)", :environment => 'production'
+	runner "Payroll.calculate_for(Date.today)"
+	runner "Payroll.calculate_for(Date.today - 1.day)"
 end
 
 every 15.minutes do 
@@ -64,9 +64,9 @@ every 1.day, :at => '10:05 am' do
 end
 
 every 15.minutes do 
-	runner "Company.cron_job", :environment => 'production'
+	runner "Company.cron_job"
 end
 
 every 15.minutes do 
-	runner "TripStat.cron_job(1000, false)", :environment => 'production'
+	runner "TripStat.cron_job(1000, false)"
 end

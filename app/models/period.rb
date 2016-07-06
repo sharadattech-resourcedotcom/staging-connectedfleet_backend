@@ -364,7 +364,7 @@ belongs_to :user, :class_name => 'User', :foreign_key => 'user_id'
 
     def self.last_trip_by_vehicle(vehicle, period_trips)
         vehicle = vehicle.id if !vehicle.kind_of?(Integer)
-        return period_trips.select{|t| t.vehicle_id == vehicle && !t.end_date.nil?}.sort_by!{|t| !t.end_date}.first
+        return period_trips.select{|t| t.vehicle_id == vehicle && !t.end_date.nil?}.sort_by!{|t| t.end_date}.last
     end
 
     def self.privete_mileage_by_vehicle(vehicle, period_trips)

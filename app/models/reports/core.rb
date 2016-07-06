@@ -2,6 +2,15 @@ class Reports::Core
 
 	def self.list(session_user)
 		# Retturn list of reports with date range available
+		if session_user.company_id == 6 || session_user.company_id == 34 #EASIDRIVE
+			return [
+				Reports::NoMileageTrips,
+				Reports::AppVersions,
+				Reports::ManagersOfDrivers,
+				Reports::HoursPayroll
+			]
+		end
+
 		list = [
 			Reports::Trips,
 			Reports::Periods,
@@ -15,13 +24,13 @@ class Reports::Core
 			Reports::DriverPayrollDetailed,
 			Reports::BehaviourReport,
 			Reports::TopTenBehaviour,
-			Reports::Payroll
+			Reports::PayrollReport
 		]
 
 		if session_user.company.enabled_hours_payroll
 			list.push(Reports::HoursPayroll)
 		end
-		list.push(Reports::Speeding) if session_user.company_id == 4
+		list.push(Reports::Speeding) if session_user.company_id == 4 #PHOTOME
 
 		return list
 	end
