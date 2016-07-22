@@ -4,7 +4,7 @@ class Reports::PayrollReport
 	end
 
 	def self.generate(user, period_date, nil_param, params)
-		columns = ["Employee Number", " Employee Name", "Reg No.", "Opening Odometer", "Closing Odometer", 
+		columns = ["Employee Number", " Employee Name", "Reg No.", "Fuel Type", "Engine cc", "Opening Odometer", "Closing Odometer", 
 				 "Total mileage", "Total Business mileage", "Total Private mileage", "Agent email"]
 		values = []
 		start_date = Date.parse(period_date).change(:day => 1)
@@ -35,6 +35,8 @@ class Reports::PayrollReport
 					period_trips.first.user.payroll_number,
 					period_trips.first.user.last_name + " " + period_trips.first.user.first_name,
 					vehicle.registration,
+					vehicle.fuel_type.nil? ? "N/A" : vehicle.fuel_type,
+					vehicle.engine.nil? ? "N/A" : vehicle.engine,
 					end_mileage - business_mileage - private_mileage,
 					end_mileage,
 					business_mileage + private_mileage,
