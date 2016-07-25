@@ -5,7 +5,7 @@ class Reports::HoursPayroll
 
 
 	def self.generate(user, date_from, date_to, params)
-		columns = ['Branch', 'First Name', 'Last Name', 'Holiday Pay B/F','Jobs Between 08:00 and 20:00 Monday to Friday', 'Jobs Between 08:00 and 20:00 Monday to Friday - Total',
+		columns = ['Branch', 'First Name', 'Last Name', 'Holiday Pay B/F','Jobs Between 07:00 and 19:00 Monday to Friday', 'Jobs Between 07:00 and 19:00 Monday to Friday - Total',
 			'Other Hours Worked - Total', 'Other hours worked', 'Holiday Minutes Accrual', 'Holiday Pay Accrual','Holiday Claimed', 'Paid This Month', 'Holiday Pay C/F', 'Total Hours']
 		values = []
 
@@ -13,7 +13,7 @@ class Reports::HoursPayroll
 		return [columns, values] if users.length == 0
 
 		if users.length > 0
-			users = User.where('users.id IN (' + users.map{|x| x.id}.join(',') + ')  AND users.tester = FALSE')
+			users = User.eager_load(:driver_type).where('users.id IN (' + users.map{|x| x.id}.join(',') + ') AND driver_types IS NOT NULL AND users.tester = FALSE')
 			users = users.eager_load(:branch)
 		end
 

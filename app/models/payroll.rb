@@ -5,11 +5,13 @@ class Payroll < ActiveRecord::Base
 		Payroll.where("DATE(for_date) = DATE(?) AND end_datetime IS NOT NULL", date).each do |p|
 			extra_hours = 0
 			normal_hours = 0
-			start_datetime = p.start_datetime.change(sec: 0)
-			end_datetime = p.end_datetime.change(sec: 0)
+			start_datetime = p.start_datetime.change(sec: 0).in_time_zone("London")
+			end_datetime = p.end_datetime.change(sec: 0).in_time_zone("London")
+			normal_start = p.normal_start
+			normal_end = p.normal_end
 
 			if !start_datetime.weekend? && end_datetime.weekend?
-				tmp = end_datetime.last_friday.change(hour: 18, min: 0)
+				tmp = end_datetime.last_friday.change(hour: normal_end, min: 0)
 				extra_hours = (end_datetime - tmp) / 1.hour
 				end_datetime = tmp
 			end
@@ -25,14 +27,14 @@ class Payroll < ActiveRecord::Base
 			end
 			
 			if !start_datetime.weekend? && !end_datetime.weekend?
-				if start_datetime.hour < 8
+				if start_datetime.hour < normal_start
 					extra_hours = extra_hours + ((start_datetime.change(hour: 8, min: 0) - start_datetime) / 1.hour)
 					start_datetime = start_datetime.change(hour: 8, min: 0)
 				end
 
-				if end_datetime.hour >= 18
-					extra_hours = extra_hours + ((end_datetime - end_datetime.change(hour: 18, min: 0)) / 1.hour)
-					end_datetime = end_datetime.change(hour: 18, min: 0)
+				if end_datetime.hour >= normal_end
+					extra_hours = extra_hours + ((end_datetime - end_datetime.change(hour: normal_end, min: 0)) / 1.hour)
+					end_datetime = end_datetime.change(hour: normal_end, min: 0)
 				end
 				normal_hours = ((end_datetime - start_datetime) / 1.hour) if (end_datetime - start_datetime) > 0
 				p.normal_hours = normal_hours
