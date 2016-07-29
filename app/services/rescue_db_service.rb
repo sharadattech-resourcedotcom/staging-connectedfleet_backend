@@ -60,7 +60,7 @@ class RescueDbService
 		    		puts "***************************GENERAL DATA ERROR*******************"
 		    		puts ex.message
 	        		puts ex.backtrace.select { |x| x.match(/#{Rails.root.join('app')}/) }
-	        		continue
+	        		# continue
 	    	end
 
 			if company[:enabled_inspections]
