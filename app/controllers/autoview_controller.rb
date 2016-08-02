@@ -13,7 +13,7 @@ class AutoviewController < ApplicationController
     	dbusers = User.select('id, first_name, last_name, lat, lng, last_sync, status, active, marker_type').where('id IN (' + drivers_ids.join(',') + ')').order('LOWER(last_name) asc')
 
       dbusers.each do |d|
-        if d.active
+        if d.active && !d.last_sync.nil? && d.last_sync < Time.now - 1.hour
           dict = {:id => d.id, :first_name => d.first_name, :last_name => d.last_name, :lat => d.lat, :lng => d.lng, :status => d.status, :marker_type => d.marker_type}
           dict['last_sync'] = -1
           dict['last_sync'] = ((DateTime.now.utc.to_f - d.last_sync.to_f)/60).round unless d.last_sync.nil?
