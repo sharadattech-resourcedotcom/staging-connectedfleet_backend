@@ -10,9 +10,9 @@ class SalesStaff < ActiveRecord::Base
 		staff.each do |s|
 			user = User.find(s.user_id)
 			content = content + "<tr>"
-			if user.last_request.nil? || user.last_request < Time.current.change(hour: 0, min: 0)
+			if user.last_request.nil? || user.last_request < Time.now.change(hour: 0, min: 0)
 				content = content + "<td ><font color='red'>" + user.full_name + "   </font></td>" 
-				content = content + "<td>" + user.last_request + "</td>" if !user.last_request.nil?
+				content = content + "<td>" + user.last_request.strftime("%F %T") + "</td>" if !user.last_request.nil?
 				content = content + "<td>UNKNOWN</td>" if user.last_request.nil?
 			else
 				content = content + "<td>" + user.full_name + "   </td><td>" + user.last_request.strftime("%F %T") + "</td>"
