@@ -16,8 +16,8 @@ class Reports::Speeding
 			trips.each do |trip|
 				stat = trip.trip_stat
 				values.push([
-					trip.id, trip.user.full_name, trip.start_date, stat.speeds_over_123, stat.speeds_over_123_long
-				]) if stat.speeds_over_123 > 0
+					trip.id, trip.user.full_name, trip.start_date.in_time_zone('London'), stat.speeds_over_123, stat.speeds_over_123_long
+				]) if !stat.speeds_over_123.nil? && stat.speeds_over_123 > 0
 			end
 		end
 

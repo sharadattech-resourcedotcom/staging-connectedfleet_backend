@@ -18,8 +18,8 @@ class Reports::NoMileageTrips
 		trips.each do |t|			
 			duration = "At the time"
 			duration = ((t.end_date - t.start_date) / 1.hours).round(2).to_s + " h" if !t.end_date.nil?
-			end_date = t.end_date
-			end_date = end_date.strftime("%d/%m/%Y %H:%M") if !end_date.nil?
+			end_date = t.end_date.in_time_zone('London')
+			end_date = end_date.in_time_zone('London').strftime("%d/%m/%Y %H:%M") if !end_date.nil?
 			values.push([
 				t.user.payroll_number, t.user.first_name, t.user.last_name, t.user.email, t.start_date.strftime("%d/%m/%Y %H:%M"), end_date,
 		 		duration, t.status, t.vehicle_reg_number])

@@ -17,14 +17,14 @@ class Reports::Trips
 
 		trips.each do |t|			
 			end_date = t.end_date
-			end_date = end_date.strftime("%d/%m/%Y %H:%M") if !end_date.nil?
+			end_date = end_date.in_time_zone('London').strftime("%d/%m/%Y %H:%M") if !end_date.nil?
 			if t.period.nil?
 				values.push([
-					t.user.payroll_number, t.user.first_name, t.user.last_name, t.user.email, t.start_date.strftime("%d/%m/%Y %H:%M"), end_date,
+					t.user.payroll_number, t.user.first_name, t.user.last_name, t.user.email, t.start_date.in_time_zone('London').strftime("%d/%m/%Y %H:%M"), end_date,
 			 		t.start_mileage, t.end_mileage, t.status, t.vehicle_reg_number, nil, t.mileage, t.private_mileage, nil, nil ])
 			else
 				values.push([
-					t.user.payroll_number, t.user.first_name, t.user.last_name, t.user.email, t.start_date.strftime("%d/%m/%Y %H:%M"), end_date,
+					t.user.payroll_number, t.user.first_name, t.user.last_name, t.user.email, t.start_date.in_time_zone('London').strftime("%d/%m/%Y %H:%M"), end_date,
 			 		t.start_mileage, t.end_mileage, t.status, t.vehicle_reg_number, t.period.agent_email, t.mileage, t.private_mileage, t.period.start_mileage, t.period.end_mileage ])
 			end
 		end

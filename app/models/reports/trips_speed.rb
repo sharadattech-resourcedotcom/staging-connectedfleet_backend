@@ -18,8 +18,8 @@ class Reports::TripsSpeed
 			values.push([
 				t.user.first_name, 
 				t.user.last_name, 
-				t.start_date.strftime("%d/%m/%Y %H:%M"), 
-				(t.end_date.nil?) ? '' : t.end_date.strftime("%d/%m/%Y %H:%M"),
+				t.start_date.in_time_zone('London').strftime("%d/%m/%Y %H:%M"), 
+				(t.end_date.nil?) ? '' : t.end_date.in_time_zone('London').strftime("%d/%m/%Y %H:%M"),
 				(t.trip_stat.speed_min.nil? || t.trip_stat.speed_min < 0) ? '' : sprintf("%.0f", t.trip_stat.speed_min / 1.609), 
 				(t.trip_stat.speed_max.nil? || t.trip_stat.speed_max < 0) ? '' : sprintf("%.0f", t.trip_stat.speed_max / 1.609), 
 				(t.trip_stat.speed_avg.nil? || t.trip_stat.speed_avg < 0) ? '' : sprintf("%.0f", t.trip_stat.speed_avg / 1.609),
