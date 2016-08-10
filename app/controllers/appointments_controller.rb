@@ -46,7 +46,7 @@ class AppointmentsController < ApplicationController
 
 			vehicle = Vehicle.find_by_registration(params[:appointment][:vehicle_registration])
 			if vehicle.nil?
-				vehicle = Vehicle.create_blank_with_registration(params[:appointment][:vehicle_registration])
+				vehicle = Vehicle.create_blank_with_registration(params[:appointment][:vehicle_registration], @session_user.company_id)
 			end
 			vehicle.add_make_and_model(params[:appointment][:vehicle_make], params[:appointment][:vehicle_model])
 			params[:appointment][:vehicle_id] = vehicle.id
