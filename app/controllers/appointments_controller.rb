@@ -13,6 +13,7 @@ class AppointmentsController < ApplicationController
 			appointments = appointments.where(:product_id => params[:search][:product_id]) if params[:search][:product] != nil
 			appointments = appointments.where(:insurance_company_id => params[:search][:insurance_company_id]) if params[:search][:insurance_company_id] != nil
 			appointments = appointments.where(:vehicle_id => params[:search][:vehicle_id]) if params[:search][:vehicle_id] != nil
+			appointments = appointments.eager_load(:vehicle).where("vehicles.registration ILIKE '%#{params[:search][:vehicle_registration].gsub(/\W/ , "").upcase}%'") if !params[:search][:vehicle_registration].nil?
 			return render :json => {:status => true, :errors => [], :data => {:appointments => appointments.limit(100).offset((params[:page].to_i - 1)* 100), :count => appointments.count}}
 		else
 			appointments = appointments.where(:vehicle_id => params[:vehicle_id].to_i) if params[:vehicle_id] != nil
@@ -38,7 +39,19 @@ class AppointmentsController < ApplicationController
 
 	def create_appointment
 		params[:appointment][:company_id] = @session_user.company_id
-		appointment = Appointment.new(appointment_params)
+		if params[:appointment][:vehicle_id].nil?
+			if !([params[:appointment][:vehicle_registration], params[:appointment][:vehicle_make], params[:appointment][:vehicle_model]] & [nil, "", " "]).empty?
+				return render :json => {:status => false, :errors => "Please fill all required fields.", :data => {}}
+			end
+
+			vehicle = Vehicle.find_by_registration(params[:appointment][:vehicle_registration])
+			if vehicle.nil?
+				vehicle = Vehicle.create_blank_with_registration(params[:appointment][:vehicle_registration])
+			end
+			vehicle.add_make_and_model(params[:appointment][:vehicle_make], params[:appointment][:vehicle_model])
+			params[:appointment][:vehicle_id] = vehicle.id
+		end
+		appointment = Appointment.new(appointment_params) 
 		ActiveRecord::Base.transaction do
 			if appointment.valid?
 				appointment.build_job(:status => 0)

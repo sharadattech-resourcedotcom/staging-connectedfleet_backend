@@ -7,7 +7,7 @@ class Appointment < ActiveRecord::Base
 	has_one :job, -> { where("job_type = 'D'") }, class_name: "Job"
 	has_one :collection_job, -> { where("job_type = 'C'") }, class_name: "Job"
 
-	validates_presence_of :branch_id, :product_id, :insurance_company_id, :vehicle_id
+	validates_presence_of :product_id, :vehicle_id #:branch_id, :insurance_company_id, 
 
 	def vehicle_info
 		info = self.vehicle.make_and_model + ' (' + self.vehicle.registration + ")"
@@ -33,6 +33,15 @@ class Appointment < ActiveRecord::Base
 		end
 	end
 
+	def description
+		desc = ""
+		desc += self.branch.description + " - " if self.branch
+		desc += self.product.description
+		desc += " (" + self.id.to_s + ") "
+		desc += " | " + self.vehicle_info
+		return desc 
+	end
+
 	def self.by_vehicles_access(user_id)
 		return Appointment.where(vehicle_id => UserVehicle.user_vehicles_ids(user_id))
 	end
@@ -43,7 +52,7 @@ class Appointment < ActiveRecord::Base
 
 	def as_json(options = { })
 	    super((options || { }).merge({
-	    	:methods => [:vehicle_info, :driver_full_name, :status],
+	    	:methods => [:vehicle_info, :driver_full_name, :status, :description],
 	        :include => [:branch, :product, :insurance_company, :vehicle]
 	    }))
   	end
