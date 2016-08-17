@@ -64,17 +64,37 @@ class MailSender
         # email_text += 'Please login here <a href=' + (@host).to_s + '/drivers#/' + period.user_id.to_s + '/trips> ADDRESS </a> to close period '
         mail = Mail.new do
           #to 'radwas88@gmail.com'
-          to period.user.email
+          to 'kiszewski.marcin@gmail.com'#period.user.email
           #to 'shinga@poczta.fm'
+          from 'noreply@3reign.com'
+          subject 'Second Reminder to Close Month End Mileage'
+          html_part do
+            content_type 'text/html; charset=UTF-8'
+            body "<p>Dear All</p>" + 
+                  "<p>This is your second reminder to log your month end mileage and close your month today – the system indicates this has not been completed yet. Failing this, the system will close your month automatically and use your last known mileage to calculate the relevant payments and submit this to payroll.  You will not get an opportunity to dispute or amend the figures.</p>" + 
+                  "<p>Please visit http://connectedfleet.com to login and review your mileage.</p>" + 
+                  "<p>Once you have closed your month, it will be sent to your Line Manager who will authorise it. If there is any irregularity with your mileage please let your CLM Internal Account Manager know immediately so it can be corrected before the closing date. You will not be able to correct this by yourself.</p>" + 
+                  "<p>If you have any issues closing the month down, please call your Internal Account Manager at CLM on 01908219361.</p>"
+          end
+        end
+
+        if mail.deliver
+            puts 'Email sent to ' + period.user.email
+        end
+    end
+
+    def self.send_final_reminder(period)
+        mail = Mail.new do
+          to 'kiszewski.marcin@gmail.com'#period.user.email
           from 'noreply@3reign.com'
           subject 'Final Reminder to Close Month End Mileage'
           html_part do
             content_type 'text/html; charset=UTF-8'
-            body '<p>Dear All</p>
-                  <p>This is you final reminder to log your month end mileage and close your month – the system indicates this has not been completed yet. This must be done by the 5th of the month. Failing this, the system will close your month automatically and use your last known mileage to calculate the relevant payments and submit this to payroll.</p>
-                  <p>Please visit http://connectedfleet.com to login and review your mileage.</p>
-                  <p>Once you have closed your month, it will be sent to your Line Manager who will authorise it. If there is any irregularity with your mileage please let your CLM Internal Account Manager know immediately so it can be corrected before the closing date. You will not be able to correct this by yourself.</p>
-                  <p>If you have any issues closing the month down, please call your Internal Account Manager at CLM on 01908219361.</p>'
+            body "<p>Dear All</p>" + 
+                  "<p>This is your FINAL REMINDER to log your month end mileage and close your month today – the system indicates this has not been completed yet. Failing this, the system will close your month automatically and use your last known mileage to calculate the relevant payments and submit this to payroll.  You will not get an opportunity to dispute or amend the figures.</p>" + 
+                  "<p>Please visit http://connectedfleet.com to login and review your mileage.</p>" + 
+                  "<p>Once you have closed your month, it will be sent to your Line Manager who will authorise it. If there is any irregularity with your mileage please let your CLM Internal Account Manager know immediately so it can be corrected before the closing date. You will not be able to correct this by yourself.</p>" + 
+                  "<p>If you have any issues closing the month down, please call your Internal Account Manager at CLM on 01908219361.</p>"
           end
         end
 
