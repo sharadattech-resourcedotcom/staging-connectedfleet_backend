@@ -15,7 +15,7 @@ class Reports::TripsStat
 		trips.each do |t|			
 			values.push([
 				t.id, 
-				t.start_date.strftime("%d/%m/%Y %H:%M"), 
+				t.start_date.in_time_zone('London').strftime("%d/%m/%Y %H:%M"), 
 				t.safe_end_date,
 				t.user.first_name, 
 				t.user.last_name, 

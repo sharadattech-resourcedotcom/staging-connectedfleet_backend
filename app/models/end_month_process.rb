@@ -101,6 +101,21 @@ class EndMonthProcess
       end
   end
 
+  def self.send_driver_final_reminder(company_id)
+      previous_month = self.current_date-1.month
+      previous_month = previous_month.change(day: 20)
+      periods = Period.eager_load(:user).where(
+          "periods.status <> 'closed' AND DATE(start_date) <= ? AND DATE(start_date) >= ? AND users.company_id = ? AND users.active = TRUE",
+           previous_month, previous_month - 1.month, company_id
+      )
+    
+      periods.each do |p|
+          if p.user.can("work as driver")
+              MailSender.send_final_reminder(p)
+          end
+      end
+  end
+
   
   ### 
   # On 10th of each month we generate summary of periods and send to Payroll 

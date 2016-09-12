@@ -137,6 +137,7 @@ Rails.application.routes.draw do
 
 
   match '/vehicles/list' => 'vehicles#list', :as => 'vehicles_list', :via => [:post, :options]
+  match '/vehicles/vehicle_trips' => 'vehicles#vehicle_trips', :as => 'vehicle_trips', :via => [:post, :options]
   match '/vehicles/create' => 'vehicles#create_vehicle', :as => 'vehicle_create', :via => [:post, :options]
   match '/vehicles/pre_data' => 'vehicles#pre_data', :as => 'vehicles_pre_data', :via => [:get, :options]
   match '/vehicles/:id/details' => 'vehicles#details', :as => 'vehicle_details', :via => [:get, :options]

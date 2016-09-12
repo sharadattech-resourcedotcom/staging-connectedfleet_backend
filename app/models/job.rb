@@ -9,7 +9,9 @@ class Job < ActiveRecord::Base
 	end
 
 	def appointment_info
-		description = self.appointment.branch.description.to_s + ' - ' +self.appointment.product.description.to_s
+		description = ""
+		description += self.appointment.branch.description.to_s + ' - ' if self.appointment.branch
+		description += self.appointment.product.description.to_s
 		id = self.appointment.id.to_s
 		vehicle = self.appointment.vehicle_info
 		vehicle_id = self.appointment.vehicle.id

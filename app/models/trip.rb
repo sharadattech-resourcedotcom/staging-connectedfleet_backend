@@ -16,7 +16,7 @@ class Trip < ActiveRecord::Base
 
   def safe_end_date
     return '-' if (self.end_date.nil?)
-    return self.end_date.strftime("%d/%m/%Y %H:%M")
+    return self.end_date.in_time_zone('London').strftime("%d/%m/%Y %H:%M")
   end
 
   def mileage

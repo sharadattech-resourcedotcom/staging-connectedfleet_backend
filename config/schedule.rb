@@ -27,12 +27,16 @@ set :output, "log/cron.log"
 # end
 
 
-every 1.month, :at => 'Januar 1st 9:00 am' do
+every 1.month, :at => 'Januar 1st 1:00 am' do
    runner 'EndMonthProcess.send_driver_first_reminder(4)'
 end
 
-every 1.month, :at => 'January 3rd 9:00 am' do
+every 1.month, :at => 'January 3rd 1:00 am' do
    runner 'EndMonthProcess.send_driver_second_reminder(4)'
+end
+
+every 1.month, :at => 'January 5th 1:00 am' do
+   runner 'EndMonthProcess.send_driver_final_reminder(4)'
 end
 
 # every 1.month, :at => 'January 5th 9.00 am' do

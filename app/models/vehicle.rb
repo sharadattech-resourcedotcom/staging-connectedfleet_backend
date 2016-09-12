@@ -18,12 +18,18 @@ class Vehicle < ActiveRecord::Base
         return txt.join(' - ')
     end
 
+    def add_make_and_model(make, model)
+        man = Manufacturer.where("LOWER(description) = LOWER('#{make}') AND company_id = ?", self.company_id).take
+        man = Manufacturer.create(:company_id => self.company_id, :description => make) if man.nil?
+        mod = man.models.where("LOWER(description) = LOWER('#{model}')").take
+        mod = Model.create(:manufacturer_id => man.id, :description => model) if mod.nil?
+        self.update_attributes(:manufacturer_id => man.id, :model_id => mod.id)
+    end
+
     def self.get_by_registration(registration)
         registration = registration.gsub(/\W/ , "").upcase
         return Vehicle.where(:registration => registration).take
     end
-
-    
 
     def self.create_blank_with_registration(registration, company_id)
         v = Vehicle.new

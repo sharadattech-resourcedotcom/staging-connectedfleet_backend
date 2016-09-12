@@ -1,4 +1,7 @@
 class Point < ActiveRecord::Base
+	belongs_to :trip
+	belongs_to :user
+	has_one :vehicle, through: :trip
 	self.primary_keys = :user_id, :timestamp
 
 	def fuel_in_mpg
