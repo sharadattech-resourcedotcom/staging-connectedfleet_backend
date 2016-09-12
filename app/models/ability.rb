@@ -96,6 +96,7 @@ class Ability
         permissions['vehicles']['list'] = 'see vehicles list' 
         permissions['vehicles']['pre_data'] = 'see vehicles list'
         permissions['vehicles']['details'] = 'see vehicle details'
+         permissions['vehicles']['vehicle_trips'] = 'see vehicle details'
         permissions['vehicles']['create_vehicle'] = 'create vehicles'   
         permissions['vehicles']['update_details'] = 'update vehicles'  
 

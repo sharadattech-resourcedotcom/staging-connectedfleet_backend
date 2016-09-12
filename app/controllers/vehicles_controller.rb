@@ -20,6 +20,28 @@ class VehiclesController < ApplicationController
 		return render :json => {:status => true, :errors => [], :data => {:vehicle => vehicle}}
 	end
 
+	def vehicle_trips
+		begin
+			vehicle = Vehicle.find_by(:id => params[:vehicle_id])
+			raise ["Vehicle not found."] if vehicle.nil?
+			raise ["Access denied."] if vehicle.company_id != @session_user.company_id
+			trips = vehicle.trips.joins(:user).select('trips.*', 'users.id AS driver_id', 'users.first_name', 'users.last_name', 'users.email').order(start_date: :desc)
+
+			 if params[:page]
+			 	count = nil
+		        if params[:page] == 0
+		            count = trips.length
+		            params[:page] = 1
+		        end
+		        return render :json => {:status => true, :errors => [], :data => {:trips => trips.limit(50).offset((params[:page].to_i - 1)* 50), :count => count}}
+		    else
+		        return render :json => {:status => true, :errors => [], :data => {:trips => trips}}
+		    end
+		rescue => ex
+			return render :json => {:status => false, :errors => ex, :data => nil}
+		end
+	end
+
 	def update_details
 		vehicle = Vehicle.where(:id => params[:vehicle][:id]).take
 		vehicles = Vehicle.all
