@@ -26,12 +26,16 @@ class FtpService
 		begin
 			unless file_path.nil?
 				Net::FTP.open('213.129.76.25', 'nexusftp', 'T;nov5?(') do |ftp|
+					puts "CONNECTED TO NEXUS"
 					ftp.chdir("/CF")
+					puts "IN PROPER DIRECTORY"
 					ftp.putbinaryfile(file_path, File.basename(file_path))
 					MailSender.send_upload_confirm(true, file_path, "Photome - Nexus")
 				end
 			end
 		rescue => ex
+			puts ex.message
+			puts x.backtrace
 			MailSender.send_upload_confirm(false, file_path, "Photome - Nexus", ex.backtrace)
 		end
 	end
