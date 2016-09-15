@@ -278,4 +278,39 @@ class MailSender
         end
     end
 
+    def self.send_upload_confirm(status, file_path, company_name, backtrace = nil)
+        receivers = ['kiszewski.marcin@gmail.com', 'radwas88@gmail.com']
+        if status 
+            email_text  = "Date: " + Time.now.to_s          
+            mail = Mail.new do
+                to receivers
+                from 'noreply@3reign.com'
+                 subject  "Uploaded " + company_name + " file."
+                 content_type "multipart/alternative"
+                 part "text/plain" do |p|
+                    p.body = email_text
+                end
+                attachments[company_name + '.csv'] = {
+                              mime_type: 'text/csv',
+                              content: File.read(file_path),
+                              disposition: "inline"}
+            end  
+        else
+            email_text  = "Date: " + Time.now.to_s + "\n" + "Backtrace: " + backtrace.join("\n")         
+            mail = Mail.new do
+                to receivers
+                from 'noreply@3reign.com'
+                 subject  "Failed upload " + company_name + " file."
+                 content_type "multipart/alternative"
+                 part "text/plain" do |p|
+                    p.body = email_text
+                end
+                attachments[company_name + '.csv'] = {
+                              mime_type: 'text/csv',
+                              content: File.read(file_path),
+                              disposition: "inline"}
+            end  
+        end
+        mail.deliver
+    end
 end
