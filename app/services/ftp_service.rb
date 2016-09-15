@@ -24,7 +24,7 @@ class FtpService
 
 	def self.send_file_to_nexus(file_path)
 		begin
-			unless file.nil?
+			unless file_path.nil?
 				Net::SFTP.start('213.129.76.25', 'nexusftp', :password => 'T;nov5?(') do |sftp|
 					sftp.upload!(file_path, "CF/" + File.basename(file_path))
 					MailSender.send_upload_confirm(true, file_path, "Photome - Nexus")
