@@ -5,7 +5,7 @@ class FtpService
 	def self.generate_and_send_photome_monthly_csv(date)
 		date = Date.parse(date) if !date.kind_of?(Date)
 		columns, values = Reports::PayrollReport.generate(User.where(:company_id => 4).take, date.to_s, nil, nil)
-		file_name = ("Photome_" + date.strftime("%B") + "_" + date.year.to_s + ".csv").downcase
+		file_name = (date.strftime("%m") + date.strftime("%Y") + ".csv").downcase
 		file = File.join(Rails.root, "csv/" + file_name)
 
 		CSV.open(file, "w") do |csv|
