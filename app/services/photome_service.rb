@@ -16,13 +16,14 @@ class PhotomeService
 						else
 							period = opened_periods.take
 						end
-						next if period.start_date.month == Date.today.month && period.start_date.year == Date.today.year
-						end_date = Time.parse(Date.today.change(:day => 1).to_s).change(:hour => 22).utc.change(:hour => 3)
+						next if period.start_date.month == Date.today.month && period.start_date.year == Date.today.year || 
+											(period.start_date.month == Date.today.prev_month.month && period.start_date.year == Date.today.prev_month.year && period.start_date.day > 27)
+						end_date = Time.parse(Date.today.prev_month.change(:day => -1).to_s).change(:hour => 21).utc.change(:hour => 21, :min => 59)
 						manager = driver.manager
 						next if manager.nil?
 						manager = manager.manager
 						last_trip = period.trips.where("end_mileage IS NOT NULL").sort{|a, b| a.start_date <=> b.start_date}.last
-						period.close(last_trip.nil? ? 0 : last_trip.end_mileage, manager.email, 'autoclose', end_date)
+						period.close(last_trip.nil? ? period.start_mileage : last_trip.end_mileage, manager.email, 'autoclose', end_date)
 					end
 				end
 			rescue => ex
