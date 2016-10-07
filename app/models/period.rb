@@ -223,6 +223,22 @@ belongs_to :user, :class_name => 'User', :foreign_key => 'user_id'
         return (0...50).map { o[rand(o.length)] }.join
     end 
 
+    def reopen
+         ActiveRecord::Base.transaction do
+          period_to_reopen = self
+          period_to_delete = period_to_reopen.next_period
+
+          period_to_delete.trips.each do |t|
+            t.transfer_to_period(period_to_reopen.id)
+          end
+
+          period_to_reopen.update_attribute(:status, 'opened')
+          period_to_reopen.update_attribute(:end_date, nil)
+          period_to_reopen.update_attribute(:end_mileage, nil)
+          period_to_delete.destroy
+        end
+    end
+
     ##############STATIC METHODS##############################
     def self.create(user_id, start_mileage, old_period = nil)
         p = Period.new
