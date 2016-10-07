@@ -39,6 +39,14 @@ every 1.month, :at => 'January 5th 1:00 am' do
    runner 'EndMonthProcess.send_driver_final_reminder(4)'
 end
 
+every 1.month, :at => 'January 6th 3:00 am' do
+   runner 'PhotomeService.autoclose_current_periods'
+end
+
+every 1.month, :at => 'January 10th 3:00 am' do
+   runner 'FtpService.generate_and_send_photome_monthly_csv(Date.today.prev_month)'
+end
+
 # every 1.month, :at => 'January 5th 9.00 am' do
 #    runner "EndMonthProcess.auto_close_drivers_trips"
 # end

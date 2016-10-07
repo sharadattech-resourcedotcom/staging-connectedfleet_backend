@@ -6,7 +6,7 @@ class MailSender
         template = CompanyEmail.where('company_id = ? AND email_type = ?', period.user.company_id, 'Closed period').take   
         email_text  = template.body(period)
         mail = Mail.new do
-            to period.agent_email
+            to Rails.env != 'production' ? 'kiszewski.marcin+spam@gmail.com' : period.agent_email
             from 'noreply@3reign.com'
              subject  template.desc_subject(period)
              html_part do
@@ -20,7 +20,7 @@ class MailSender
 
     def self.test_email
         mail = Mail.new do
-            to "radwas88@gmail.com"
+            to Rails.env != 'production' ? 'kiszewski.marcin+spam@gmail.com' : "radwas88@gmail.com"
             from 'noreply@3reign.com'
              subject  "To see if this email will be sent"
              html_part do
@@ -34,7 +34,7 @@ class MailSender
 
     def self.send_email_on_new_month(period)
         mail = Mail.new do
-           to period.user.email
+            to Rails.env != 'production' ? 'kiszewski.marcin+spam@gmail.com' : period.user.email
            from 'noreply@3reign.com'
            subject  'Reminder to Close Month End Mileage'
            html_part do
@@ -63,8 +63,7 @@ class MailSender
         #  email_text  = 'You have unclosed month (period started on ' + period.start_date.to_s + ').'
         # email_text += 'Please login here <a href=' + (@host).to_s + '/drivers#/' + period.user_id.to_s + '/trips> ADDRESS </a> to close period '
         mail = Mail.new do
-          #to 'radwas88@gmail.com'
-          to 'kiszewski.marcin@gmail.com'#period.user.email
+            to Rails.env != 'production' ? 'kiszewski.marcin+spam@gmail.com' : period.user.email
           #to 'shinga@poczta.fm'
           from 'noreply@3reign.com'
           subject 'Second Reminder to Close Month End Mileage'
@@ -85,7 +84,7 @@ class MailSender
 
     def self.send_final_reminder(period)
         mail = Mail.new do
-          to 'kiszewski.marcin@gmail.com'#period.user.email
+            to Rails.env != 'production' ? 'kiszewski.marcin+spam@gmail.com' : period.user.email
           from 'noreply@3reign.com'
           subject 'Final Reminder to Close Month End Mileage'
           html_part do
@@ -113,7 +112,7 @@ class MailSender
         "<p> Output:<br>"+log.output_val+"</p><br>"
     end
       mail = Mail.new do
-        to 'radwas88@gmail.com'
+            to Rails.env != 'production' ? 'kiszewski.marcin+spam@gmail.com' : 'radwas88@gmail.com'
         from 'noreply@3reign.com'
         subject 'Raport about failed synchronizations'
         html_part do
@@ -130,7 +129,7 @@ class MailSender
         template = CompanyEmail.where('company_id = ? AND email_type = ?', period.user.company_id, 'Reminder to agents').take   
         email_text  = template.body(period)                
         mail = Mail.new do
-            to period.agent_email
+            to Rails.env != 'production' ? 'kiszewski.marcin+spam@gmail.com' : period.agent_email
             from 'noreply@3reign.com'
              subject  template.desc_subject(period)
              html_part do
@@ -149,7 +148,7 @@ class MailSender
                       '<p>Kind regards</p>'
                       
         mail = Mail.new do
-            to period.user.email
+            to Rails.env != 'production' ? 'kiszewski.marcin+spam@gmail.com' : period.user.email
             from 'noreply@3reign.com'
             subject  'Mileage submission approval'
             html_part do
@@ -167,7 +166,7 @@ class MailSender
 
         email_text = "Sending the spreadsheet"
         mail = Mail.new do
-          to 'shinga@poczta.fm'
+            to Rails.env != 'production' ? 'kiszewski.marcin+spam@gmail.com' : 'shinga@poczta.fm'
 
           from 'noreply@3reign.com'
           subject 'spreadsheet'
@@ -180,7 +179,7 @@ class MailSender
 
     def self.send_email_about_automatically_approved(period)
         mail = Mail.new do
-            to period.agent_email
+            to Rails.env != 'production' ? 'kiszewski.marcin+spam@gmail.com' : period.agent_email
             from 'noreply@3reign.com'
             subject 'Outstanding driver mileage submissions requiring authorisation'
             html_part do
@@ -233,7 +232,7 @@ class MailSender
 
                 begin
                     mail = Mail.new do
-                        to receips
+                        to Rails.env != 'production' ? 'kiszewski.marcin+spam@gmail.com' : receips
                         from 'noreply@3reign.com'
                         subject template.desc_subject(inspection)
                         content_type "multipart/alternative"
@@ -262,7 +261,7 @@ class MailSender
             template = CompanyEmail.where("company_id = ? AND email_type = 'Sales Staff'", company.id).take
             if !template.nil?
                 mail = Mail.new do
-                    to template.recipients.split(/[,;]/)
+            to Rails.env != 'production' ? 'kiszewski.marcin+spam@gmail.com' : template.recipients.split(/[,;]/)
                     from 'noreply@3reign.com'
                     subject "Sales Staff report - " + Date.today.strftime("%F")
                     html_part do
@@ -283,7 +282,7 @@ class MailSender
         if status 
             email_text  = "Date: " + Time.now.to_s          
             mail = Mail.new do
-                to receivers
+            to Rails.env != 'production' ? 'kiszewski.marcin+spam@gmail.com' : receivers
                 from 'noreply@3reign.com'
                  subject  "Uploaded " + company_name + " file."
                  content_type "multipart/alternative"
@@ -298,7 +297,7 @@ class MailSender
         else
             email_text  = "Date: " + Time.now.to_s + "\n" + "Backtrace: " + backtrace.join("\n")         
             mail = Mail.new do
-                to receivers
+            to Rails.env != 'production' ? 'kiszewski.marcin+spam@gmail.com' : receivers
                 from 'noreply@3reign.com'
                  subject  "Failed upload " + company_name + " file."
                  content_type "multipart/alternative"
