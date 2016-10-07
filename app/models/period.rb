@@ -233,6 +233,7 @@ belongs_to :user, :class_name => 'User', :foreign_key => 'user_id'
           end
 
           period_to_reopen.update_attribute(:status, 'opened')
+          period_to_reopen.update_attribute(:closed_by, nil)
           period_to_reopen.update_attribute(:end_date, nil)
           period_to_reopen.update_attribute(:end_mileage, nil)
           period_to_delete.destroy
