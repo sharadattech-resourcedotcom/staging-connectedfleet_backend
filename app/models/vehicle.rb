@@ -70,9 +70,9 @@ class Vehicle < ActiveRecord::Base
     end
 
 	def as_json(options = { })
-    super((options || { }).merge({
-        :methods => [:make_and_model],
-        :include => [:manufacturer, :model]
-    }))
-  end
+        super((options || { }).merge({
+            :methods => [:make_and_model],
+            :include => [:manufacturer, :model]
+        }))
+    end
 end

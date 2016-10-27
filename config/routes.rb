@@ -160,6 +160,7 @@ Rails.application.routes.draw do
   match '/inspections/download_inspection_pdf' => 'inspections#download_inspection_pdf', :as => 'download_inspection_pdf', :via => [:get, :options]
   match '/inspections/download_gemini_inspection_pdf' => 'inspections#download_gemini_inspection_pdf', :as => 'download_gemini_inspection_pdf', :via => [:get, :options], :defaults => {:format => 'pdf'}
   match '/inspections/download_clm_inspection_pdf' => 'inspections#download_clm_inspection_pdf', :as => 'download_clm_inspection_pdf', :via => [:get, :options], :defaults => {:format => 'pdf'}
+  match '/inspections/:inspection_type/:id' => 'inspections#details', :as => 'inspection_details_type', :via => [:get, :options]
   match '/inspections/:id' => 'inspections#details', :as => 'inspection_details', :via => [:get, :options]
   #auth module
       get  'auth/signin'

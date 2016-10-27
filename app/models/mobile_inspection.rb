@@ -47,10 +47,14 @@ class MobileInspection < ActiveRecord::Base
     	return return_data
 	end
 
+	def inspection_type
+		return self.class.name
+	end
+
 	def as_json(options = { })
 	    super((options || { }).merge({
 	    	:include => [:damageItems, :vehicle],
-	    	:methods => [:driver_full_name, :damage_collections, :job_number, :vehicle_info, :appointment_id]
+	    	:methods => [:driver_full_name, :damage_collections, :job_number, :vehicle_info, :appointment_id, :inspection_type]
 	    }))
   	end
 	
