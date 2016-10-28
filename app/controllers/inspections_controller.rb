@@ -85,4 +85,21 @@ class InspectionsController < ApplicationController
             end
         end
 	end
+
+	def download_estimator_inspection_pdf
+		@inspection = EstimatorInspection.find(params[:inspection_id])
+        @vehicle = @inspection.vehicle
+        @driver = @inspection.driver      
+        @collections = @inspection.damage_collections
+        @img_path = @inspection.vehicle_type == 'VAN' ? "#{Rails.root}/public/van_exterior.png" : "#{Rails.root}/public/car_exterior.png"
+        @img_size = FastImage.size(@img_path)
+        @scale = 0.8
+        @date = @inspection.event_timestamp.in_time_zone("London").to_s
+        @date = @date[0...@date.length - 9]
+        respond_to do |format|
+            format.pdf do
+                render  :pdf => "estimator_inspection_#{params[:inspection_id]}_#{@inspection.event_timestamp}", :template => 'pdf_templates/estimator.pdf.erb', :page_size => "A4"
+            end
+        end
+	end
 end

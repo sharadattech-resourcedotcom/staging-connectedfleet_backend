@@ -1,0 +1,121 @@
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<style>
+		table, th, td {
+		    border: 1px solid black;
+		    border-collapse: collapse;
+		}
+		th, td {
+		    padding: 5px;
+		    text-align: left;
+		}
+	</style>
+</head>
+
+<div style="text-align:center;">
+	<h1>LVCR <%= @inspection.vehicle_type %> Estimate Sheet</h1>
+</div>
+<table width="100%" height="100%" style="margin-top:50px;">
+	<tr>
+		<td><b>Registration No.</b></td>
+		<td><%= @inspection.vehicle.registration %></td>
+		<td><b>Chassis No.</b></td>
+		<td><%= @inspection.chassis_no %></td>
+	</tr>
+	<tr>
+		<td><b>Make</b></td>
+		<td><%= @inspection.vehicle_make %></td>
+		<td><b>Colour</b></td>
+		<td><%= @inspection.color %></td>
+	</tr>
+	<tr>
+		<td><b>Model</b></td>
+		<td><%= @inspection.vehicle_model %></td>
+		<td><b>Mileage</b></td>
+		<td><%= @inspection.mileage %></td>
+	</tr>
+	<tr>
+		<td><b>Model</b></td>
+		<td><%= @inspection.vehicle_model %></td>
+		<td><b>Mileage</b></td>
+		<td><%= @inspection.mileage %></td>
+	</tr>
+	<% @inspection.check_list.each_with_index do |(key, value), index| %>
+		<% if index % 2 == 0 %>
+			<tr>
+				<td><b><%= key %></b></td>
+				<td><%= value %></td>
+		<% else %>
+				<td><b><%= key %></b></td>
+				<td><%= value %></td>
+			</tr>
+		<% end %>
+	<% end %>
+	<% if @inspection.vehicle_type == "VAN" %>
+	  	<tr>
+	  		<td><b>Ply Lining Condition</b></td>
+	  		<td colspan="3"><%= @inspection.ply_lining_condition %></td>
+	  	</tr>
+  	<% end %>
+</table>
+<% if @inspection.vehicle_type == "VAN" %>
+	<table width="100%" style="margin-top:30px;">
+		<tr>
+			<td rowspan="2" style="text-align:center;vertical-align: middle; padding-top:15px;"><b><h3>Tyres</h3></b></td>
+			<td><b>NSF</b></td>
+			<td><%= @inspection.nsf %>mm</td>
+			<td><b>NSR</b></td>
+			<td><%= @inspection.nsr %>mm</td>
+		</tr>
+		<tr>
+			<td><b>OSF</b></td>
+			<td><%= @inspection.osf %>mm</td>
+			<td><b>OSR</b></td>
+			<td><%= @inspection.osr %>mm</td>
+		</tr>
+	</table>
+<% end %>
+<hr/>
+<div style="position:relative; margin-left:25%; width: <%= @img_size[0] * @scale %>; height: <%= @img_size[1] * @scale %>;">
+	<img style="width: <%= @img_size[0] * @scale %>; height: <%= @img_size[1] * @scale %>;" src="<%= @img_path %>" />
+	<% @collections.each_with_index do |collection, index| %>
+		<div style="width: 17px;
+                      height: 17px;
+                      -webkit-border-radius: 25px;
+                      -moz-border-radius: 25px;
+                      border-radius: 25px;
+                      background: green;
+                      position:absolute; 
+                      left:<%= collection.x_percent %>%;
+                      top:<%= collection.y_percent - 2 %>%;"
+                 ><div style="margin-left:4px; font-size:15px;"><%= index + 1 %></div></div>
+		
+	<% end %>
+</div>
+<div style="display:block; clear:both; page-break-after:always;"></div>
+
+<table width="100%" style="margin-top:50px;">
+	<tr>
+		<td  style="text-align:center;"><b>Item</b></td>
+		<td style="text-align:center;"><b>Description</b></td>
+		<td style="text-align:center;"><b>Repair Method</b></td>
+		<td style="text-align:center;"><b>Price</b></td>
+		<td style="text-align:center;"><b>Picture</b></td>
+	</tr>
+	<% @collections.each_with_index do |collection, index| %>
+		<tr>
+			<td><%= index + 1  %></td>
+			<td><%= collection.description %></td>
+			<td><%= collection.repair_method %></td>
+			<td><%= collection.repair_price.to_s + ' £' %></td>
+			<td><%= collection.damage_items.empty? ? 'No' : 'Yes' %></td>
+		</tr>
+	<% end %>
+	<tr>
+		<td colspan="3" style="text-align:right;">Total:</td>
+		<td colspan="2" style="text-align:left;"><%= @collections.map(&:repair_price).reduce(:+) %> £</td>
+	</tr>
+</table>
+
+<h2 style="margin-top:40px;">Date: <%= @date %></h2> 
+<h2>Assessor:</h2>
