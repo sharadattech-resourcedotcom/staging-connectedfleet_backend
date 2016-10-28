@@ -9,6 +9,10 @@ class EstimatorInspection < ActiveRecord::Base
 		return info
 	end
 
+	def check_list
+		return JSON.parse(super)
+	end
+
 	def vehicle_info
 		info = nil
 		info = self.vehicle.make_and_model + ' (' + self.vehicle.registration + ")" if !self.vehicle.nil?

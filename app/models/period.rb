@@ -143,7 +143,7 @@ belongs_to :user, :class_name => 'User', :foreign_key => 'user_id'
             if self.valid?
                 self.save
                 self.refresh_mileage
-                # MailSender.send_email_about_closed_period(self)
+                MailSender.send_email_about_closed_period(self)
                 Period.create(self.user_id, end_mileage, self)
                 return true
             else
