@@ -120,6 +120,7 @@ class Ability
         permissions['inspections']['download_inspection_pdf'] = 'see inspections'
         permissions['inspections']['download_gemini_inspection_pdf'] = 'see inspections'
         permissions['inspections']['download_clm_inspection_pdf'] = 'see inspections'
+        permissions['inspections']['download_estimator_inspection_pdf'] = 'see inspections'
 
 
     return permissions[controller][method]
