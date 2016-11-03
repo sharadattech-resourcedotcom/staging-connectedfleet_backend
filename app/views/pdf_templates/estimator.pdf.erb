@@ -34,12 +34,6 @@
 		<td><b>Mileage</b></td>
 		<td><%= @inspection.mileage %></td>
 	</tr>
-	<tr>
-		<td><b>Model</b></td>
-		<td><%= @inspection.vehicle_model %></td>
-		<td><b>Mileage</b></td>
-		<td><%= @inspection.mileage %></td>
-	</tr>
 	<% @inspection.check_list.each_with_index do |(key, value), index| %>
 		<% if index % 2 == 0 %>
 			<tr>
