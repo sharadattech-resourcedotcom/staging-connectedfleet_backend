@@ -116,11 +116,11 @@ class Ability
 
     permissions['inspections'] = Hash.new
         permissions['inspections']['list'] = 'see inspections'
-        permissions['inspections']['details'] = 'see inspections'
-        permissions['inspections']['download_inspection_pdf'] = 'see inspections'
-        permissions['inspections']['download_gemini_inspection_pdf'] = 'see inspections'
-        permissions['inspections']['download_clm_inspection_pdf'] = 'see inspections'
-        permissions['inspections']['download_estimator_inspection_pdf'] = 'see inspections'
+        permissions['inspections']['details'] = 'see inspection details'
+        permissions['inspections']['download_inspection_pdf'] = 'see inspection details'
+        permissions['inspections']['download_gemini_inspection_pdf'] = 'see inspection details'
+        permissions['inspections']['download_clm_inspection_pdf'] = 'see inspection details'
+        permissions['inspections']['download_estimator_inspection_pdf'] = 'see inspection details'
 
 
     return permissions[controller][method]
