@@ -380,11 +380,13 @@ class DriversController < ApplicationController
   end
 
   def listInspections
-    if @session_user.role.access_level == 1
-      inspections = MobileInspection.where(:vehicle_id => UserVehicle.user_vehicles_ids(@session_user.id))
-    else
-      inspections = MobileInspection.where(:user_id => params[:driver_id])
-    end 
+    # if @session_user.role.access_level == 1
+    #   inspections = MobileInspection.where(:vehicle_id => UserVehicle.user_vehicles_ids(@session_user.id))
+    # else
+    inspections = MobileInspection.where(:user_id => params[:driver_id])
+    inspections += EstimatorInspection.where(:driver_id => params[:driver_id])
+    inspections = inspections.as_json.sort_by {|h| h['created_at']}.reverse unless inspections.empty?
+    # end 
     return render :json =>  {:status => true, :errors => [], :data => {:inspections => inspections}}
   end
 
