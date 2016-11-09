@@ -300,7 +300,7 @@ class ManagementPanelController < ApplicationController
 				user = User.where(:id => param_user[:id]).take
 				user.update_attributes(:role_id => param_user[:selected_role][:id])
 			end
-			user.user_permissions.destroy_all
+			user.user_permissions.each{|x| x.delete}
 			
 			if !param_user[:permissions].nil?
 				param_user[:permissions].each do |p|

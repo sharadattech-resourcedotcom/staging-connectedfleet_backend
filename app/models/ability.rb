@@ -12,7 +12,7 @@ class Ability
         permissions['drivers']['getClosedPeriods'] = 'see driver details'
         permissions['drivers']['getLastPeriods'] = 'see driver details'
         permissions['drivers']['listTrips'] = 'see driver details'
-        permissions['drivers']['listInspections'] = 'see driver details'
+        permissions['drivers']['listInspections'] = 'see driver inspections'
         permissions['drivers']['isLastClosedPeriod'] = 'see driver details'
         permissions['drivers']['fetchPeriod'] = 'see driver details'
         permissions['drivers']['create'] = 'create drivers'
